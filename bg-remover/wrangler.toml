@@ -1,14 +1,6 @@
-# Cloudflare Pages 配置（可选）
-# 如果使用 Git 部署则不需要此文件
-
 name = "bg-remover"
 compatibility_date = "2024-01-01"
-
-# D1 数据库绑定
-[[d1_databases]]
-binding = "DB"
-database_name = "task-database"
-database_id = "c992aed2-c495-4302-95c6-4ef88eeee220"
+pages_build_output_dir = ".next"
 
 [vars]
-# REMOVE_BG_API_KEY = "your_api_key"
+REMOVE_BG_API_KEY = "your_api_key_here"
