@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-// 强制动态渲染（处理 FormData）
+// 使用 Edge Runtime 支持 Cloudflare Pages
+export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {

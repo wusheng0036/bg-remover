@@ -79,7 +79,16 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       {/* Header */}
-      <header className="py-8 px-4 text-center">
+      <header className="py-8 px-4 text-center relative">
+        {/* Login Button - Top Right */}
+        <div className="absolute top-4 right-4 flex items-center gap-3">
+          <button
+            className="bg-white hover:bg-gray-100 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all shadow-md border border-gray-200 flex items-center gap-2"
+          >
+            👤 登录
+          </button>
+        </div>
+        
         <h1 className="text-5xl font-bold text-gray-800 mb-3">
           AI 一键去除图片背景
         </h1>
