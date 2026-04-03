@@ -1,0 +1,15 @@
+name = "task-worker"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+account_id = "29a2f6b046975f21d9ba2a6d8901fb4a"
+
+# D1 数据库绑定
+[[d1_databases]]
+binding = "DB"
+database_name = "task-database"
+database_id = "c992aed2-c495-4302-95c6-4ef88eeee220"
+
+# 环境变量
+[vars]
+ENVIRONMENT = "production"

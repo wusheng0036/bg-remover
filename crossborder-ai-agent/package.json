@@ -1,0 +1,22 @@
+{
+  "name": "crossborder-ai-agent",
+  "version": "0.1.0",
+  "description": "跨境电商 AI 运营助手 - 客服自动化 + Listing 优化 + 竞品监控",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node tests/test.js"
+  },
+  "keywords": [
+    "openclaw",
+    "ai-agent",
+    "ecommerce",
+    "crossborder"
+  ],
+  "author": "风火轮",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

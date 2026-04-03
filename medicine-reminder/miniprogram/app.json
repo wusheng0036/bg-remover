@@ -1,0 +1,50 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/medicine/list",
+    "pages/medicine/add",
+    "pages/family/index",
+    "pages/profile/index",
+    "pages/profile/stats",
+    "pages/profile/settings"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#07C160",
+    "navigationBarTitleText": "安心吃药",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07C160",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
+      },
+      {
+        "pagePath": "pages/medicine/list",
+        "text": "药品",
+        "iconPath": "images/medicine.png",
+        "selectedIconPath": "images/medicine-active.png"
+      },
+      {
+        "pagePath": "pages/family/index",
+        "text": "家庭",
+        "iconPath": "images/family.png",
+        "selectedIconPath": "images/family-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

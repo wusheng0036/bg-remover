@@ -1,0 +1,14 @@
+# 生产依赖
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+sqlalchemy==2.0.25
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-multipart==0.0.6
+
+# 缓存
+redis==5.0.1
+fastapi-cache2==0.2.1
+
+# 可选：生产部署
+gunicorn==21.2.0

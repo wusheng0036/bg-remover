@@ -1,0 +1,60 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 日期头部 -->
+  <view class="header">
+    <view class="date">{{today}} {{weekday}}</view>
+    <view class="streak">今天是服药第 12 天 💪</view>
+  </view>
+
+  <!-- 进度条 -->
+  <view class="progress-section">
+    <view class="progress-text">📊 今日进度 {{completed}}/{{total}}</view>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+    <view class="progress-percent">{{progress}}%</view>
+  </view>
+
+  <!-- 待服药 -->
+  <view class="section">
+    <view class="section-title">⏰ 待服药 ({{pendingMedicines.length}})</view>
+    
+    <view class="medicine-card" wx:for="{{pendingMedicines}}" wx:key="_id">
+      <view class="card-header">
+        <text class="medicine-name">💊 {{item.name}}</text>
+        <text class="medicine-time {{item.status}}">
+          {{item.status === 'overdue' ? '(已过)' : item.status === 'current' ? '(进行中)' : '(待提醒)'}}
+        </text>
+      </view>
+      <view class="card-body">
+        <text>{{item.dosage}}{{item.unit}} | {{item.instruction}}</text>
+        <text class="time">⏰ {{item.scheduledTime}}</text>
+      </view>
+      <view class="card-footer">
+        <button 
+          class="checkin-btn {{item.status === 'current' ? 'active' : ''}}"
+          bindtap="onCheckIn"
+          data-medicineid="{{item._id}}"
+          data-time="{{item.scheduledTime}}">
+          {{item.status === 'overdue' ? '补打卡' : item.status === 'current' ? '立即服药 🟢' : '已设置'}}
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已完成 -->
+  <view class="section">
+    <view class="section-title">✅ 已完成 ({{completedMedicines.length}})</view>
+    
+    <view class="completed-item" wx:for="{{completedMedicines}}" wx:key="_id">
+      <text>{{item.name}}</text>
+      <text class="completed-time">{{item.actualTime}}</text>
+      <text class="checkmark">✅</text>
+    </view>
+  </view>
+
+  <!-- 添加临时服药 -->
+  <view class="add-temp" bindtap="onAddTemp">
+    + 添加临时服药
+  </view>
+</view>
