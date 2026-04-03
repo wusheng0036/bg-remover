@@ -9,10 +9,10 @@ node_modules/
 venv/
 .venv/
 
-# 构建输出
+# 构建输出（保留 .next 供 Cloudflare 使用）
+# .next/
 dist/
 dist-*/
-.next/
 out/
 
 # 数据库
