@@ -24,7 +24,7 @@ export default function PricingPage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {/* Starter */}
+          {/* Starter - $4.99 */}
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 hover:border-indigo-500 transition-all hover:-translate-y-1">
             <div className="text-5xl font-bold mb-1">10 <span className="text-xl">credits</span></div>
             <div className="text-3xl font-bold mb-1">$4.99</div>
@@ -34,7 +34,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Popular */}
+          {/* Popular - $12.99 */}
           <div className="bg-slate-800 border-2 border-indigo-500 rounded-2xl p-8 relative hover:-translate-y-1 transition-all">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-bold px-4 py-1 rounded-full">
               ⭐ Most Popular
@@ -47,7 +47,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Pro Pack */}
+          {/* Pro Pack - $29.99 */}
           <div className="bg-slate-800 border-2 border-green-500 rounded-2xl p-8 relative hover:-translate-y-1 transition-all">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-slate-900 text-sm font-bold px-4 py-1 rounded-full">
               Best Value
@@ -68,7 +68,7 @@ export default function PricingPage() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {/* Basic */}
+          {/* Basic - $7.99 */}
           <div className="bg-slate-800 border border-slate-700 rounded-2xl p-8 hover:border-green-500 transition-all">
             <div className="inline-block bg-green-500/20 text-green-400 text-xs font-bold px-3 py-1 rounded-full mb-4">
               Save vs Packs
@@ -87,7 +87,7 @@ export default function PricingPage() {
             </button>
           </div>
 
-          {/* Pro */}
+          {/* Pro - $15.99 */}
           <div className="bg-slate-800 border-2 border-green-500 rounded-2xl p-8 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-slate-900 text-sm font-bold px-4 py-1 rounded-full">
               Best Value
