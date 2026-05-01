@@ -35,3 +35,6 @@ Thumbs.db
 
 # OpenClaw
 .openclaw/workspace-state.json
+.vercel/
+.next/
+node_modules/
