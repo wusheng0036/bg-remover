@@ -1,6 +1,8 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
+import Link from 'next/link'
+import GoogleLogin from './components/GoogleLogin'
 
 type BgColor = 'transparent' | 'white' | 'black'
 
@@ -11,6 +13,15 @@ export default function Home() {
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [bgColor, setBgColor] = useState<BgColor>('transparent')
+  const [user, setUser] = useState<any>(null)
+  const [quota, setQuota] = useState({ used: 0, limit: 50 })
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user')
+    if (savedUser) {
+      setUser(JSON.parse(savedUser))
+    }
+  }, [])
 
   const onDrop = useCallback((files: File[]) => {
     if (files.length === 0) return
@@ -48,14 +59,14 @@ export default function Home() {
       
       if (!res.ok) {
         const err = await res.json()
-        throw new Error(err.error || '处理失败')
+        throw new Error(err.error || 'Processing failed')
       }
       
       const blob = await res.blob()
       const processedUrl = URL.createObjectURL(blob)
       setProcessed(processedUrl)
     } catch (err) {
-      setError(err instanceof Error ? err.message : '处理失败，请重试')
+      setError(err instanceof Error ? err.message : 'Processing failed, please try again')
     } finally {
       setProcessing(false)
     }
@@ -78,21 +89,30 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="py-8 px-4 text-center relative">
-        {/* Login Button - Top Right */}
-        <div className="absolute top-4 right-4 flex items-center gap-3">
-          <button
-            className="bg-white hover:bg-gray-100 text-gray-700 px-6 py-2 rounded-lg font-medium transition-all shadow-md border border-gray-200 flex items-center gap-2"
-          >
-            👤 登录
-          </button>
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="text-2xl font-bold text-gray-800">
+            🌀 BG Remover
+          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/pricing" className="text-gray-600 hover:text-gray-800">
+              Pricing
+            </Link>
+            <Link href="/faq" className="text-gray-600 hover:text-gray-800">
+              FAQ
+            </Link>
+            <GoogleLogin />
+          </div>
         </div>
-        
+      </nav>
+
+      {/* Header */}
+      <header className="py-8 px-4 text-center">
         <h1 className="text-5xl font-bold text-gray-800 mb-3">
-          AI 一键去除图片背景
+          AI Background Remover
         </h1>
-        <p className="text-xl text-gray-600">3 秒抠图，无需 PS，支持 4K 高清</p>
+        <p className="text-xl text-gray-600">Remove image backgrounds in 3 seconds, no Photoshop needed, 4K HD support</p>
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -107,11 +127,11 @@ export default function Home() {
             <div className="space-y-4">
               <div className="text-7xl">📁</div>
               {isDragActive ? (
-                <p className="text-xl text-blue-600 font-medium">松开上传...</p>
+                <p className="text-xl text-blue-600 font-medium">Drop to upload...</p>
               ) : (
                 <>
-                  <p className="text-xl text-gray-700 font-medium">拖拽图片到这里，或点击选择</p>
-                  <p className="text-sm text-gray-500">支持 PNG, JPG, WebP（最大 5MB）</p>
+                  <p className="text-xl text-gray-700 font-medium">Drag & drop image here, or click to select</p>
+                  <p className="text-sm text-gray-500">Supports PNG, JPG, WebP (max 5MB)</p>
                 </>
               )}
             </div>
@@ -123,7 +143,7 @@ export default function Home() {
           <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
               <div className="p-4 border-b bg-gray-50">
-                <h2 className="text-lg font-semibold text-gray-800">📷 原图预览</h2>
+                <h2 className="text-lg font-semibold text-gray-800">📷 Original Preview</h2>
               </div>
               <div className="bg-checkerboard p-6" style={{ minHeight: '400px' }}>
                 <img
@@ -141,13 +161,13 @@ export default function Home() {
                 disabled={processing}
                 className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-10 py-4 rounded-xl font-semibold transition-all shadow-lg text-lg flex items-center gap-3"
               >
-                ✨ 开始去除背景
+                ✨ Remove Background
               </button>
               <button
                 onClick={handleReset}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-10 py-4 rounded-xl font-semibold transition-all text-lg"
               >
-                🔄 重新选择
+                🔄 Reselect
               </button>
             </div>
           </div>
@@ -157,8 +177,8 @@ export default function Home() {
         {processing && (
           <div className="text-center py-16">
             <div className="animate-spin text-7xl mb-6">⏳</div>
-            <p className="text-2xl text-gray-700 font-medium">正在去除背景...</p>
-            <p className="text-gray-500 mt-2">通常需要 2-5 秒</p>
+            <p className="text-2xl text-gray-700 font-medium">Removing background...</p>
+            <p className="text-gray-500 mt-2">Usually takes 2-5 seconds</p>
           </div>
         )}
 
@@ -170,7 +190,7 @@ export default function Home() {
               onClick={handleReset} 
               className="mt-4 text-blue-600 hover:underline font-medium"
             >
-              重新上传
+              Re-upload
             </button>
           </div>
         )}
@@ -211,7 +231,7 @@ export default function Home() {
             {/* Background Color Controls */}
             <div className="bg-white rounded-xl p-4 shadow-lg">
               <div className="flex flex-wrap items-center justify-center gap-3">
-                <span className="text-sm text-gray-600 font-medium">处理结果背景:</span>
+                <span className="text-sm text-gray-600 font-medium">Preview background:</span>
                 <button
                   onClick={() => setBgColor('transparent')}
                   className={`px-5 py-2 rounded-lg font-medium transition-all ${
@@ -220,7 +240,7 @@ export default function Home() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  ⬜ 透明
+                  ⬜ Transparent
                 </button>
                 <button
                   onClick={() => setBgColor('white')}
@@ -230,7 +250,7 @@ export default function Home() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  ⬜ 白色
+                  ⬜ White
                 </button>
                 <button
                   onClick={() => setBgColor('black')}
@@ -240,7 +260,7 @@ export default function Home() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  ⬛ 黑色
+                  ⬛ Black
                 </button>
               </div>
             </div>
@@ -251,13 +271,13 @@ export default function Home() {
                 onClick={handleDownload}
                 className="bg-green-500 hover:bg-green-600 text-white px-10 py-4 rounded-xl font-semibold transition-all shadow-lg text-lg"
               >
-                📥 下载 PNG
+                📥 Download PNG
               </button>
               <button
                 onClick={handleReset}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-10 py-4 rounded-xl font-semibold transition-all text-lg"
               >
-                🔄 重新上传
+                🔄 Upload New
               </button>
             </div>
           </div>
@@ -268,26 +288,80 @@ export default function Home() {
           <div className="mt-16 grid md:grid-cols-3 gap-6">
             <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
               <div className="text-5xl mb-4">⚡</div>
-              <h3 className="font-bold text-xl text-gray-800 mb-2">快速处理</h3>
-              <p className="text-gray-600">通常 2-5 秒完成</p>
+              <h3 className="font-bold text-xl text-gray-800 mb-2">Fast Processing</h3>
+              <p className="text-gray-600">Complete in 2-5 seconds</p>
             </div>
             <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
               <div className="text-5xl mb-4">🔒</div>
-              <h3 className="font-bold text-xl text-gray-800 mb-2">隐私安全</h3>
-              <p className="text-gray-600">图片不存储，处理完即删除</p>
+              <h3 className="font-bold text-xl text-gray-800 mb-2">Privacy & Security</h3>
+              <p className="text-gray-600">Images not stored, deleted after processing</p>
             </div>
             <div className="bg-white rounded-2xl p-8 shadow-lg text-center">
-              <div className="text-5xl mb-4">💰</div>
-              <h3 className="font-bold text-xl text-gray-800 mb-2">完全免费</h3>
-              <p className="text-gray-600">无限制使用</p>
+              <div className="text-5xl mb-4">🎨</div>
+              <h3 className="font-bold text-xl text-gray-800 mb-2">HD Output</h3>
+              <p className="text-gray-600">Supports 4K HD images</p>
+            </div>
+          </div>
+        )}
+
+        {/* Pricing CTA */}
+        {!original && (
+          <div className="mt-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-2xl p-8 text-center text-white">
+            <h2 className="text-3xl font-bold mb-4">Need more credits?</h2>
+            <p className="text-lg mb-6">Upgrade to Pro for 500 HD images per month, no watermark</p>
+            <div className="flex gap-4 justify-center">
+              <Link
+                href="/pricing"
+                className="bg-white text-blue-600 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors"
+              >
+                View Pricing
+              </Link>
+              <Link
+                href="/faq"
+                className="bg-blue-700 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-800 transition-colors"
+              >
+                Learn More
+              </Link>
             </div>
           </div>
         )}
       </div>
 
       {/* Footer */}
-      <footer className="py-8 text-center text-gray-500 text-sm">
-        Powered by Remove.bg API
+      <footer className="bg-gray-800 text-white py-12">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="font-bold text-lg mb-4">🌀 BG Remover</h3>
+              <p className="text-gray-400">AI-powered background removal tool. Remove backgrounds in 3 seconds, no Photoshop needed.</p>
+            </div>
+            <div>
+              <h4 className="font-medium mb-4">Product</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/" className="hover:text-white">Home</Link></li>
+                <li><Link href="/pricing" className="hover:text-white">Pricing</Link></li>
+                <li><Link href="/faq" className="hover:text-white">FAQ</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-4">Support</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/faq" className="hover:text-white">Help Center</Link></li>
+                <li><a href="mailto:support@imagebackgroundremover.guru" className="hover:text-white">Contact Us</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-4">Legal</h4>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="border-t border-gray-700 pt-8 text-center text-gray-400">
+            <p>© 2026 BG Remover. All rights reserved.</p>
+          </div>
+        </div>
       </footer>
     </main>
   )

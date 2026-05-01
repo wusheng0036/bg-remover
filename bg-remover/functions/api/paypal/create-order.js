@@ -1,27 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-
-export const runtime = 'edge';
-
-export async function POST(request: NextRequest) {
+export async function onRequestPost({ request, env }) {
   try {
     const { amount, currency = 'USD', description } = await request.json();
 
-    const clientId = process.env.PAYPAL_CLIENT_ID;
-    const secret = process.env.PAYPAL_SECRET;
+    const clientId = env.PAYPAL_CLIENT_ID;
+    const secret = env.PAYPAL_SECRET;
 
     if (!clientId || !secret) {
-      return NextResponse.json(
-        { error: 'PayPal credentials not configured' },
-        { status: 500 }
+      return new Response(
+        JSON.stringify({ error: 'PayPal credentials not configured' }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // 判断是否为沙箱环境（沙箱 Client ID 通常较短，或以 Ae 开头）
     const isSandbox = clientId.startsWith('Ae') || clientId.length < 50;
     const baseUrl = isSandbox 
       ? 'https://api-m.sandbox.paypal.com' 
       : 'https://api-m.paypal.com';
 
+    // 获取访问令牌
     const tokenResponse = await fetch(
       `${baseUrl}/v1/oauth2/token`,
       {
@@ -39,9 +35,13 @@ export async function POST(request: NextRequest) {
     const tokenData = await tokenResponse.json();
     
     if (!tokenData.access_token) {
-      throw new Error('Failed to get PayPal access token');
+      return new Response(
+        JSON.stringify({ error: 'Failed to get PayPal access token', details: tokenData }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
+    // 创建订单
     const orderResponse = await fetch(
       `${baseUrl}/v2/checkout/orders`,
       {
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
                 currency_code: currency,
                 value: amount,
               },
-              description: description,
+              description: description || 'Bg Remover Credits',
             },
           ],
         }),
@@ -68,15 +68,21 @@ export async function POST(request: NextRequest) {
     const orderData = await orderResponse.json();
 
     if (!orderData.id) {
-      throw new Error('Failed to create PayPal order');
+      return new Response(
+        JSON.stringify({ error: 'Failed to create PayPal order', details: orderData }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    return NextResponse.json({ orderId: orderData.id });
+    return new Response(
+      JSON.stringify({ orderId: orderData.id }),
+      { headers: { 'Content-Type': 'application/json' } }
+    );
   } catch (error) {
     console.error('PayPal create-order error:', error);
-    return NextResponse.json(
-      { error: 'Failed to create order' },
-      { status: 500 }
+    return new Response(
+      JSON.stringify({ error: 'Failed to create order', details: error.message }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }

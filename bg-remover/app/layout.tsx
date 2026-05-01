@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Background Remover - 一键去除图片背景',
-  description: '免费在线去除图片背景，支持 PNG、JPG、WebP 格式，快速安全',
+  title: 'AI Background Remover - Remove Image Backgrounds Instantly',
+  description: 'Remove image backgrounds in seconds with AI. Free online tool supporting PNG, JPG, WebP. No Photoshop needed, 4K HD output.',
 }
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN">
+    <html lang="en">
       <body>{children}</body>
     </html>
   )

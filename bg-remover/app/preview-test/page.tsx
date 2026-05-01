@@ -6,18 +6,18 @@ export default function PreviewTest() {
 
   return (
     <div className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold mb-4">预览测试</h1>
+      <h1 className="text-2xl font-bold mb-4">Preview Test</h1>
       
       <div className="space-y-4">
         <button
           onClick={() => setShowOriginal(!showOriginal)}
           className="bg-blue-500 text-white px-4 py-2 rounded"
         >
-          切换：{showOriginal ? '原图' : '去背图'}
+          Toggle: {showOriginal ? 'Original' : 'Processed'}
         </button>
 
         <div className="border-2 border-dashed p-8 text-center bg-checkerboard">
-          <p className="mb-4">棋盘格背景测试（透明区域应该显示灰白格子）</p>
+          <p className="mb-4">Checkerboard background test (transparent areas should show gray-white squares)</p>
           <div 
             className="w-32 h-32 mx-auto"
             style={{ 
