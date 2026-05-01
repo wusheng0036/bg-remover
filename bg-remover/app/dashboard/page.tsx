@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import GoogleLogin from './components/GoogleLogin'
+import GoogleLogin from '../components/GoogleLogin'
 
 interface User {
   name: string

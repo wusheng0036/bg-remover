@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import GoogleLogin from './components/GoogleLogin'
+import GoogleLogin from '../components/GoogleLogin'
 import { useState } from 'react'
 
 export default function FAQ() {
